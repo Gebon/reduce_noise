@@ -2,7 +2,7 @@ import sys
 import os.path as path
 import subprocess
 source_folder = input("File path:") # sys.argv[2]
-# audacity_path = sys.argv[1]
+audacity_path = input("Audacity executable path:") # sys.argv[1]
 
 def open_audacity(audacity_path):
     openApp(audacity_path)
@@ -98,7 +98,6 @@ def process_the_soundtrack(audacity_path, input_file, output_file):
     export_file(output_file)
     close_audacity()
 
-audacity_path = "C:\\Program Files (x86)\\Audacity\\audacity.exe"
 for root, _, files in os.walk(source_folder):
     for file in files:
         if file != "face.mp4":
@@ -111,5 +110,3 @@ for root, _, files in os.walk(source_folder):
         run_cmd_command('ffmpeg -i %s -vn -ar 44100 -ac 2 -ab 320k -f mp3 %s' % (output_file, result_file))
         run_cmd_command('del %s' % input_file)
         run_cmd_command('del %s' % output_file)
-
-# c:\users\bigbear\desktop\test

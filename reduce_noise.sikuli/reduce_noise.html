@@ -74,7 +74,7 @@
 <span class="kw">import</span> os.path <span class="kw">as</span> path
 <span class="kw">import</span> subprocess
 source_folder = <span class="skw">input</span>(<span class="str">"File path:"</span>) <span class="cmt"># sys.argv[2]</span>
-<span class="cmt"># audacity_path = sys.argv[1]</span>
+audacity_path = <span class="skw">input</span>(<span class="str">"Audacity executable path:"</span>) <span class="cmt"># sys.argv[1]</span>
 
 <span class="kw">def</span> open_audacity(audacity_path):
     openApp(audacity_path)
@@ -170,7 +170,6 @@ source_folder = <span class="skw">input</span>(<span class="str">"File path:"</s
     export_file(output_file)
     close_audacity()
 
-audacity_path = <span class="str">"C:\\Program Files (x86)\\Audacity\\audacity.exe"</span>
 <span class="kw">for</span> root, _, files <span class="kw">in</span> os.walk(source_folder):
     <span class="kw">for</span> file <span class="kw">in</span> files:
         <span class="kw">if</span> file != <span class="str">"face.mp4"</span>:
@@ -183,9 +182,6 @@ audacity_path = <span class="str">"C:\\Program Files (x86)\\Audacity\\audacity.e
         run_cmd_command(<span class="str">'ffmpeg -i %s -vn -ar 44100 -ac 2 -ab 320k -f mp3 %s'</span> % (output_file, result_file))
         run_cmd_command(<span class="str">'del %s'</span> % input_file)
         run_cmd_command(<span class="str">'del %s'</span> % output_file)
-
-<span class="cmt"># c:\users\bigbear\desktop\test</span>
-
 </pre>
 </body>
 </html>
