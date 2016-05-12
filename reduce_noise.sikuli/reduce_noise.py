@@ -1,7 +1,7 @@
 import sys
 import os.path as path
 import subprocess
-source_folder = input("File path:") # sys.argv[2]
+source_folder = input("Root folder path:") # sys.argv[2]
 audacity_path = input("Audacity executable path:") # sys.argv[1]
 
 def open_audacity(audacity_path):
