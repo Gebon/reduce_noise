@@ -1,0 +1,191 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>reduce_noise.sikuli</h2> <a href="reduce_noise.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> sys
+<span class="kw">import</span> os.path <span class="kw">as</span> path
+<span class="kw">import</span> subprocess
+source_folder = <span class="skw">input</span>(<span class="str">"File path:"</span>) <span class="cmt"># sys.argv[2]</span>
+<span class="cmt"># audacity_path = sys.argv[1]</span>
+
+<span class="kw">def</span> open_audacity(audacity_path):
+    openApp(audacity_path)
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="toolbar.png" />, <span class="dig">10</span>)
+        <span class="kw">try</span>:
+            <span class="skw">wait</span>(<img src="tooltip_ok_button.png" />)
+            <span class="skw">click</span>(<img src="tooltip_ok_button.png" />)
+        <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+            <span class="kw">pass</span>
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">print</span>(<span class="str">"Can't open Audacity"</span>)
+        exit(<span class="dig">1</span>)
+
+<span class="kw">def</span> open_file(file_name):
+    <span class="skw">type</span>(<span class="str">"o"</span>, Key.CTRL)
+    <span class="skw">wait</span>(<img src="open_file_toolbar.png" />)
+    paste(input_file)
+    <span class="skw">type</span>(Key.ENTER)
+
+    <span class="skw">wait</span>(<img src="sizing_panel.png" />, <span class="dig">30</span>)
+
+<span class="kw">def</span> open_noise_reduction_window():
+    <span class="skw">click</span>(<img src="effects_button.png" />)
+    <span class="skw">click</span>(<img src="noise_reduction_button.png" />)
+
+<span class="kw">def</span> create_noise_model():
+    <span class="skw">type</span>(Pattern(<img src="duration_modifier.png" />).targetOffset(<span class="dig">12</span>,<span class="dig">12</span>), <span class="str">"3"</span>)
+    open_noise_reduction_window()
+    <span class="skw">click</span>(Pattern(<img src="create_noise_model_button.png" />).targetOffset(-<span class="dig">12</span>,<span class="dig">19</span>))
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="cancel_button.png" />, <span class="dig">1</span>)
+        waitVanish(<img src="cancel_button.png" />)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">pass</span>
+
+<span class="kw">def</span> reduce_noise():
+    <span class="skw">type</span>(<span class="str">"a"</span>, Key.CTRL)
+    open_noise_reduction_window()
+    <span class="skw">click</span>(<img src="ok_button.png" />)
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="cancel_button.png" />, <span class="dig">5</span>)
+        waitVanish(<img src="cancel_button.png" />, <span class="dig">120</span>)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">print</span>(<span class="str">"Some problems occured while trying to reduce noise"</span>)
+        exit(<span class="dig">1</span>)
+
+<span class="kw">def</span> export_file(file_path):
+    <span class="skw">type</span>(<span class="str">"e"</span>, Key.CTRL + Key.SHIFT)
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="save_cancel_parameters_buttons.png" />)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+       <span class="kw">print</span>(<span class="str">"Can't open exporting window"</span>)
+       exit(<span class="dig">1</span>)
+    paste(output_file)
+    <span class="skw">type</span>(Key.ENTER)
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="replace_alert.png" />, <span class="dig">1</span>)
+        <span class="skw">type</span>(Key.ENTER)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">pass</span>
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="ok_button.png" />)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">print</span>(<span class="str">"Something goes wrong"</span>)
+        exit(<span class="dig">1</span>)
+    <span class="skw">type</span>(Key.ENTER)
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="stop_or_cancel_buttons.png" />)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">print</span>(<span class="str">"Exporting failed"</span>)
+        exit(<span class="dig">1</span>)
+    waitVanish(<img src="stop_or_cancel_buttons.png" />, <span class="dig">30</span>)
+
+<span class="kw">def</span> close_audacity():
+    <span class="skw">type</span>(Key.F4, Key.ALT)
+    <span class="skw">sleep</span>(<span class="dig">0.2</span>)
+    <span class="skw">type</span>(Key.RIGHT)
+    <span class="skw">type</span>(Key.ENTER)
+
+<span class="kw">def</span> maximize_window():
+    <span class="skw">type</span>(Key.UP, Key.WIN)
+
+<span class="kw">def</span> run_cmd_command(command):
+    subprocess.Popen(command, shell=True).communicate()
+
+<span class="kw">def</span> process_the_soundtrack(audacity_path, input_file, output_file):
+    open_audacity(audacity_path)
+    maximize_window()
+    open_file(input_file)
+    create_noise_model()
+    reduce_noise()
+    export_file(output_file)
+    close_audacity()
+
+audacity_path = <span class="str">"C:\\Program Files (x86)\\Audacity\\audacity.exe"</span>
+<span class="kw">for</span> root, _, files <span class="kw">in</span> os.walk(source_folder):
+    <span class="kw">for</span> file <span class="kw">in</span> files:
+        <span class="kw">if</span> file != <span class="str">"face.mp4"</span>:
+            <span class="kw">continue</span>
+        input_file = path.join(root, <span class="str">"source.mp3"</span>)
+        output_file = path.join(root, <span class="str">"cleaned.wav"</span>)
+        result_file = path.join(root, <span class="str">"cleaned.mp3"</span>)
+        run_cmd_command(<span class="str">r"ffmpeg -i %s -vn -ar 44100 -ac 2 -ab 320k -f mp3 %s"</span> % (path.join(root, file), input_file))
+        process_the_soundtrack(audacity_path, input_file, output_file)
+        run_cmd_command(<span class="str">'ffmpeg -i %s -vn -ar 44100 -ac 2 -ab 320k -f mp3 %s'</span> % (output_file, result_file))
+        run_cmd_command(<span class="str">'del %s'</span> % input_file)
+        run_cmd_command(<span class="str">'del %s'</span> % output_file)
+
+<span class="cmt"># c:\users\bigbear\desktop\test</span>
+
+</pre>
+</body>
+</html>
