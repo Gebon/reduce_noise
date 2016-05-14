@@ -73,15 +73,13 @@
 <span class="kw">import</span> sys
 <span class="kw">import</span> os.path <span class="kw">as</span> path
 <span class="kw">import</span> subprocess
-source_folder = <span class="skw">input</span>(<span class="str">"File path:"</span>) <span class="cmt"># sys.argv[2]</span>
-audacity_path = <span class="skw">input</span>(<span class="str">"Audacity executable path:"</span>) <span class="cmt"># sys.argv[1]</span>
 
 <span class="kw">def</span> open_audacity(audacity_path):
     openApp(audacity_path)
     <span class="kw">try</span>:
         <span class="skw">wait</span>(<img src="toolbar.png" />, <span class="dig">10</span>)
         <span class="kw">try</span>:
-            <span class="skw">wait</span>(<img src="tooltip_ok_button.png" />)
+            <span class="skw">wait</span>(<img src="tooltip_ok_button.png" />, <span class="dig">2</span>)
             <span class="skw">click</span>(<img src="tooltip_ok_button.png" />)
         <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
             <span class="kw">pass</span>
@@ -91,10 +89,12 @@ audacity_path = <span class="skw">input</span>(<span class="str">"Audacity execu
 
 <span class="kw">def</span> open_file(file_name):
     <span class="skw">type</span>(<span class="str">"o"</span>, Key.CTRL)
-    <span class="skw">wait</span>(<img src="open_file_toolbar.png" />)
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="open_file_toolbar.png" />)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="kw">print</span>(<span class="str">"Can't find \"Open...\" window"</span>)
     paste(input_file)
     <span class="skw">type</span>(Key.ENTER)
-
     <span class="skw">wait</span>(<img src="sizing_panel.png" />, <span class="dig">30</span>)
 
 <span class="kw">def</span> open_noise_reduction_window():
@@ -169,6 +169,14 @@ audacity_path = <span class="skw">input</span>(<span class="str">"Audacity execu
     reduce_noise()
     export_file(output_file)
     close_audacity()
+
+
+<span class="kw">if</span> len(sys.argv) &gt; <span class="dig">1</span>:
+    audacity_path = sys.argv[<span class="dig">1</span>]
+    source_folder = sys.argv[<span class="dig">2</span>]
+<span class="kw">else</span>:
+    audacity_path = <span class="skw">input</span>(<span class="str">"Audacity executable path:"</span>)
+    source_folder = <span class="skw">input</span>(<span class="str">"Root folder path:"</span>)
 
 <span class="kw">for</span> root, _, files <span class="kw">in</span> os.walk(source_folder):
     <span class="kw">for</span> file <span class="kw">in</span> files:

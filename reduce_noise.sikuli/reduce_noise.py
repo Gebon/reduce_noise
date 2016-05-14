@@ -1,15 +1,13 @@
 import sys
 import os.path as path
 import subprocess
-source_folder = input("File path:") # sys.argv[2]
-audacity_path = input("Audacity executable path:") # sys.argv[1]
 
 def open_audacity(audacity_path):
     openApp(audacity_path)
     try:
         wait("toolbar.png", 10)
         try:
-            wait("tooltip_ok_button.png")
+            wait("tooltip_ok_button.png", 2)
             click("tooltip_ok_button.png")
         except FindFailed as e:
             pass
@@ -19,10 +17,12 @@ def open_audacity(audacity_path):
 
 def open_file(file_name):
     type("o", Key.CTRL)
-    wait("open_file_toolbar.png")
+    try:
+        wait("open_file_toolbar.png")
+    except FindFailed as e:
+        print("Can't find \"Open...\" window")
     paste(input_file)
     type(Key.ENTER)
-    
     wait("sizing_panel.png", 30)
 
 def open_noise_reduction_window(): 
@@ -98,6 +98,14 @@ def process_the_soundtrack(audacity_path, input_file, output_file):
     export_file(output_file)
     close_audacity()
 
+
+if len(sys.argv) > 1:
+    audacity_path = sys.argv[1]
+    source_folder = sys.argv[2]
+else:
+    audacity_path = input("Audacity executable path:")
+    source_folder = input("Root folder path:")
+                
 for root, _, files in os.walk(source_folder):
     for file in files:
         if file != "face.mp4":

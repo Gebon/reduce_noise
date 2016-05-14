@@ -28,3 +28,8 @@ Getting started:
  - OR run in command line `runsikulix.cmd` and then open `reduce_noise.sikuli` in IDE
 
 `reduce_noise.skl` can be generated inside IDE
+
+Root folder and Audacity executable can be specified from command line or at the runtime.
+```
+runsikulix.cmd -r %path_to_script% %audacity_path% %root_folder_path%
+```
