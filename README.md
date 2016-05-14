@@ -33,3 +33,5 @@ Root folder and Audacity executable can be specified from command line or at the
 ```
 runsikulix.cmd -r %path_to_script% -- "%audacity_path%" "%root_folder_path%"
 ```
+
+#### [Stable](https://github.com/Gebon/reduce_noise/tree/stable) branch
