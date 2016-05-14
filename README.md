@@ -31,5 +31,5 @@ Getting started:
 
 Root folder and Audacity executable can be specified from command line or at the runtime.
 ```
-runsikulix.cmd -r %path_to_script% %audacity_path% %root_folder_path%
+runsikulix.cmd -r %path_to_script% -- "%audacity_path%" "%root_folder_path%"
 ```
