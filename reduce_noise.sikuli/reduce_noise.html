@@ -173,23 +173,10 @@
 
 <span class="kw">if</span> len(sys.argv) &gt; <span class="dig">1</span>:
     audacity_path = sys.argv[<span class="dig">1</span>]
-    source_folder = sys.argv[<span class="dig">2</span>]
-<span class="kw">else</span>:
-    audacity_path = <span class="skw">input</span>(<span class="str">"Audacity executable path:"</span>)
-    source_folder = <span class="skw">input</span>(<span class="str">"Root folder path:"</span>)
+    input_file = sys.argv[<span class="dig">2</span>]
+    output_file=sys.argv[<span class="dig">3</span>]
 
-<span class="kw">for</span> root, _, files <span class="kw">in</span> os.walk(source_folder):
-    <span class="kw">for</span> file <span class="kw">in</span> files:
-        <span class="kw">if</span> file != <span class="str">"face.mp4"</span>:
-            <span class="kw">continue</span>
-        input_file = path.join(root, <span class="str">"source.mp3"</span>)
-        output_file = path.join(root, <span class="str">"cleaned.wav"</span>)
-        result_file = path.join(root, <span class="str">"cleaned.mp3"</span>)
-        run_cmd_command(<span class="str">r"ffmpeg -i %s -vn -ar 44100 -ac 2 -ab 320k -f mp3 %s"</span> % (path.join(root, file), input_file))
-        process_the_soundtrack(audacity_path, input_file, output_file)
-        run_cmd_command(<span class="str">'ffmpeg -i %s -vn -ar 44100 -ac 2 -ab 320k -f mp3 %s'</span> % (output_file, result_file))
-        run_cmd_command(<span class="str">'del %s'</span> % input_file)
-        run_cmd_command(<span class="str">'del %s'</span> % output_file)
+process_the_soundtrack(audacity_path, input_file, output_file)
 </pre>
 </body>
 </html>
