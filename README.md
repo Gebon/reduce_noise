@@ -1,5 +1,5 @@
 # reduce_noise
-## This repository contains Jython script to reduce noise from soundtrack of face.mp4 files contained in specified folder and its subfolders
+## This repository contains Jython script to reduce noise from audio file
 
 Dependencies:
  - JDK >= 1.7
@@ -31,5 +31,8 @@ Getting started:
 
 Root folder and Audacity executable can be specified from command line or at the runtime.
 ```
-runsikulix.cmd -r %path_to_script% -- "%audacity_path%" "%root_folder_path%"
+runsikulix.cmd -r %path_to_script% -- "%audacity_path%" "%input_audio_file_path%" "%output_audio_file_path%"
 ```
+`%output_audio_file_path%` shouldn't have an extension. Extension, by default, is WAV
+
+#### [Stable](https://github.com/Gebon/reduce_noise/tree/stable) branch
