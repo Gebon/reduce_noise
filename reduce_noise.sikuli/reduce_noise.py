@@ -50,6 +50,17 @@ def reduce_noise():
         print("Some problems occured while trying to reduce noise")
         exit(1)
 
+def normalize():
+    click("effects_button.png")
+    click("normalizing_menu.png")
+    click( Pattern("normalizing_dialog.png").targetOffset(4,35))
+    try:
+        wait("normalize_process.png",5)
+        waitVanish("normalize_process.png",120)
+    except FindFailed as e:
+        print("Some problems occured while trying to normilize audio")
+        exit(1)
+
 def export_file(file_path):
     type("e", Key.CTRL + Key.SHIFT)
     try:
@@ -95,6 +106,7 @@ def process_the_soundtrack(audacity_path, input_file, output_file):
     open_file(input_file)
     create_noise_model()
     reduce_noise()
+    normalize()
     export_file(output_file)
     close_audacity()
 
@@ -103,5 +115,9 @@ if len(sys.argv) > 1:
     audacity_path = sys.argv[1]
     input_file = sys.argv[2]
     output_file=sys.argv[3]
+else:
+    audacity_path="C:\\Program Files (x86)\\Audacity\\audacity.exe"
+    input_file = "H:\\LHPS\\Input\\Module1\\Lecture1\\11\\input.wav"
+    output_file="H:\\LHPS\\Input\\Module1\\Lecture1\\11\\clean.wav"
 
 process_the_soundtrack(audacity_path, input_file, output_file)
